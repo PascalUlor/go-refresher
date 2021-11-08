@@ -18,4 +18,8 @@ func (server *Server) InitializeRoutes() {
 	server.Router = mux.NewRouter()
 	//TODO default routes
 	server.Router.HandleFunc("/", middlewares.ResponseJSON(controller.Default)).Methods("GET")
+
+
+	//TODO get block routes
+	server.Router.HandleFunc("/{network}/{blockHash}", middlewares.ResponseJSON(controller.GetBlock)).Methods("GET")
 }
