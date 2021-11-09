@@ -77,7 +77,7 @@ The API is built for easy use and understanding. It includes the following:
 | EndPoint                                                       | Functionality                                                                        |
 | -------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
 | POST `/block/:network/:ref`                               | Gets details of a _block_ in a blockchain                                |
-| POST `/trx/network/:ref` | Gets details of a _transaction_ in a block using _specified transaction reference_ |
+| POST `/trx/:network/:ref` | Gets details of a _transaction_ in a block using _specified transaction reference_ |
 
 Now you can test the endpoints with a client e.g POSTMAN
 
