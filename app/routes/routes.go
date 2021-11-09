@@ -21,5 +21,8 @@ func (server *Server) InitializeRoutes() {
 
 
 	//TODO get block routes
-	server.Router.HandleFunc("/{network}/{blockHash}", middlewares.ResponseJSON(controller.GetBlock)).Methods("GET")
+	server.Router.HandleFunc("/block/{network}/{blockHash}", middlewares.ResponseJSON(controller.GetBlock)).Methods("GET")
+
+	//TODO get trx routes
+	server.Router.HandleFunc("/trx/{network}/{trxRef}", middlewares.ResponseJSON(controller.GetTrx)).Methods("GET")
 }

@@ -40,27 +40,17 @@ func (controller *Controllers) GetBlock(w http.ResponseWriter, r *http.Request) 
 		log.Fatalln(err)
 	}
 
-	// fmt.Print(resp.Body)
-
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	//Convert body to string
 
-	// sb := string(body)
-	// log.Printf(sb)
-
-	// we read response body
-	// if err := json.NewDecoder(resp.Body).Decode(&block); err != nil {
-	// 	logFatal(err)
-	//  }
 	if err := json.Unmarshal(body, &block); err != nil { // Parse []byte to go struct pointer
 		fmt.Println("Can not unmarshal JSON")
 	}
-	// fmt.Println(block)
+
 	record,_:=json.Marshal(block.Data)
 	json.Unmarshal([]byte(record), &result)
 	
@@ -72,7 +62,6 @@ func (controller *Controllers) GetBlock(w http.ResponseWriter, r *http.Request) 
 			log.Fatalln(err)
 		}
 
-		// fmt.Print(resp.Body)
 
 		defer resp.Body.Close()
 		body, err := ioutil.ReadAll(resp.Body)
@@ -80,12 +69,6 @@ func (controller *Controllers) GetBlock(w http.ResponseWriter, r *http.Request) 
 			log.Fatalln(err)
 		}
 
-		// sb := string(body)
-		// log.Printf(sb)
-		// we read response body
-		// if err := json.NewDecoder(resp.Body).Decode(&block); err != nil {
-		// 	logFatal(err)
-		//  }
 		if err := json.Unmarshal(body, &transactions); err != nil { // Parse []byte to go struct pointer
 			fmt.Println("Can not unmarshal JSON2")
 		}
