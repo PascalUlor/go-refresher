@@ -15,7 +15,6 @@ import (
 	"example.com/models"
 )
 
-
 func logFatal(err error) {
 	if err != nil {
 		log.Fatal(err)
@@ -24,7 +23,9 @@ func logFatal(err error) {
 
 //TODO Getblock route
 func (controller *Controllers) GetBlock(w http.ResponseWriter, r *http.Request) {
-	var result models.Response
+	var block models.Response
+	var transactions models.TrxResponse
+	var result models.Result
 
 	params := mux.Vars(r)
 
@@ -32,35 +33,64 @@ func (controller *Controllers) GetBlock(w http.ResponseWriter, r *http.Request) 
 
 	network := params["network"]
 
-	url := "https://sochain.com/api/v2/get_block/"+network+"/"+blockHash
+	url := "https://sochain.com/api/v2/get_block/" + network + "/" + blockHash
 	log.Println(url)
 	resp, err := http.Get(url)
 	if err != nil {
 		log.Fatalln(err)
 	}
-	
+
 	// fmt.Print(resp.Body)
 
 	defer resp.Body.Close()
-	 body, err := ioutil.ReadAll(resp.Body)
+	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatalln(err)
 	}
-	
+
 	//Convert body to string
-	
-	sb := string(body)
-	log.Printf(sb)
+
+	// sb := string(body)
+	// log.Printf(sb)
 
 	// we read response body
 	// if err := json.NewDecoder(resp.Body).Decode(&block); err != nil {
 	// 	logFatal(err)
 	//  }
-	if err := json.Unmarshal(body, &result); err != nil {   // Parse []byte to go struct pointer
+	if err := json.Unmarshal(body, &block); err != nil { // Parse []byte to go struct pointer
 		fmt.Println("Can not unmarshal JSON")
 	}
-	fmt.Println(result)
-	 helpers.JSON(w, http.StatusOK, result)
-
+	// fmt.Println(block)
+	record,_:=json.Marshal(block.Data)
+	json.Unmarshal([]byte(record), &result)
 	
+	for _, rec := range block.Data.TransactionRefs[0:10] {
+		trxUrl := "https://sochain.com/api/v2/tx/" + network + "/" + rec
+
+		resp, err := http.Get(trxUrl)
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		// fmt.Print(resp.Body)
+
+		defer resp.Body.Close()
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		// sb := string(body)
+		// log.Printf(sb)
+		// we read response body
+		// if err := json.NewDecoder(resp.Body).Decode(&block); err != nil {
+		// 	logFatal(err)
+		//  }
+		if err := json.Unmarshal(body, &transactions); err != nil { // Parse []byte to go struct pointer
+			fmt.Println("Can not unmarshal JSON2")
+		}
+		result.Transactions = append(result.Transactions,transactions.Data)
+	}
+	helpers.JSON(w, http.StatusOK, result)
+
 }

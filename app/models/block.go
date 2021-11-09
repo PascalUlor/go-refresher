@@ -13,7 +13,7 @@ package models
 // ○ The transaction fee (fee)
 // ○ The sent value (sent_value)
 
-type Transactions []struct {
+type Transactions struct {
 	TransactionId string `json:"txid"`
 	TimeStamp     string `json:"time"`
 	Fee     	  string `json:"fee"`
@@ -26,10 +26,25 @@ type Block struct {
 	TimeStamp     int    `json:"time"`
 	NextBlockHash string `json:"next_blockhash"`
 	Size		  int    `json:"size"`
-	Transactions  Transactions`json:"txs"`
+	TransactionRefs []string `json:"txs"`
 }
 
 type Response struct {
 	Status string `json:"status"`
 	Data Block `json:"data"`
+}
+
+type TrxResponse struct {
+	Status string `json:"status"`
+	Data Transactions `json:"data"`
+}
+
+
+type Result struct {
+	Network 	  string `json:"network"`
+	BlockNumber   int 	 `json:"block_no"`
+	TimeStamp     int    `json:"time"`
+	NextBlockHash string `json:"next_blockhash"`
+	Size		  int    `json:"size"`
+	Transactions []Transactions
 }
