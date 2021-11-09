@@ -1,5 +1,13 @@
 package models
 
+import (
+	// "fmt"
+	"time"
+	// "strconv"
+	// "strings"
+
+)
+
 
 // Network Code
 // Block Number
@@ -15,15 +23,34 @@ package models
 
 type Transactions struct {
 	TransactionId string `json:"txid"`
-	TimeStamp     string `json:"time"`
+	TimeStamp     Epoch `json:"time"`
 	Fee     	  string `json:"fee"`
 	SentValue     string `json:"sent_value"`
 }
 
+type Epoch int64
+
+func (t Epoch) MarshalJSON() ([]byte, error) {
+    strDate := time.Time(time.Unix(int64(t), 0)).Format(time.RFC3339)
+    out := []byte(`"` + strDate + `"`)
+    return out, nil
+}
+
+// func (t *Epoch) UnmarshalJSON(b []byte) (err error) {
+//     s := strings.Trim(string(b), "\"")
+//     q, err := time.Parse(time.RFC3339, s)
+//     if err != nil {
+//         return err
+//     }
+//     *t = Epoch(q.Unix())
+//     return nil
+// }
+
 type Block struct {
 	Network 	  string `json:"network"`
 	BlockNumber   int 	 `json:"block_no"`
-	TimeStamp     int    `json:"time"`
+	TimeStamp     Epoch    `json:"time"`
+	PreviousBlockHash string `json:"previous_blockhash"`
 	NextBlockHash string `json:"next_blockhash"`
 	Size		  int    `json:"size"`
 	TransactionRefs []string `json:"txs"`
@@ -43,7 +70,7 @@ type TrxResponse struct {
 type Result struct {
 	Network 	  string `json:"network"`
 	BlockNumber   int 	 `json:"block_no"`
-	TimeStamp     int    `json:"time"`
+	TimeStamp     Epoch    `json:"time"`
 	NextBlockHash string `json:"next_blockhash"`
 	Size		  int    `json:"size"`
 	Transactions []Transactions
