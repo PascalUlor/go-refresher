@@ -1,10 +1,7 @@
 package models
 
 import (
-	// "fmt"
 	"time"
-	// "strconv"
-	// "strings"
 
 )
 
@@ -35,17 +32,6 @@ func (t Epoch) MarshalJSON() ([]byte, error) {
     out := []byte(`"` + strDate + `"`)
     return out, nil
 }
-
-// func (t *Epoch) UnmarshalJSON(b []byte) (err error) {
-//     s := strings.Trim(string(b), "\"")
-//     q, err := time.Parse(time.RFC3339, s)
-//     if err != nil {
-//         return err
-//     }
-//     *t = Epoch(q.Unix())
-//     return nil
-// }
-
 type Block struct {
 	Network 	  string `json:"network"`
 	BlockNumber   int 	 `json:"block_no"`

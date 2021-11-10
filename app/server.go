@@ -8,7 +8,6 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/subosito/gotenv"
 
-	// "example.com/controllers"
 	"example.com/routes"
 )
 
@@ -17,12 +16,8 @@ func init() {
 	gotenv.Load()
 }
 
-//Server app server
 
 var server = routes.Server{}
-// type Server struct {
-// 	Router *mux.Router
-// }
 
 //TODO app server
 func Run() {

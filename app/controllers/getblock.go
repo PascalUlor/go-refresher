@@ -1,10 +1,8 @@
 package controllers
 
 import (
-	// "fmt"
 	"fmt"
 	"net/http"
-	// "strconv"
 	"encoding/json"
 	"io/ioutil"
 	"log"
